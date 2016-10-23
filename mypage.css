@@ -14,31 +14,24 @@ h1 {
 	margin: 0 12px;
 	font-size: 0.9em;
 }
-.desc {
-	text-align: center;
-}
 .article {
 	position: relative;
-	width: 60%;
-	max-width: 600px;
+	text-align: center;
 	margin: 0 auto;
+	width: 60%;
+}
+.part {
 	background-color: #FFF;
 }
-.day { 
-	color:#333;
-	margin-left: 15px;
-}
 .title {
-	color:#333;
-	margin-left: 15px;
-	font-size: 2em;
-	text-decoration: underline;
+	margin-right: 1em;
 }
-.heading {
-	margin-left: 15px;
-	font-size: 1.2em;
+.box {
+	display: inline-block;
 }
-p {
-	margin-left: 15px;
-	font-size: 1em;
+button {
+	color: #555;
+	background-color: #d8d8d8;
+	border: 0.5px solid #888;
+	box-shadow: 0.5px 0.5px 0.5px 0.5px #aaa;
 }

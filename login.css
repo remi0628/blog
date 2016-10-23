@@ -1,0 +1,35 @@
+html,body {
+	background-color: #d8d8d8;
+	width: 100%;
+	font-family:"游ゴシック" , "Yu Gothic" , sans-serif;
+}
+h1 {
+	text-align: center;
+}
+.table {
+	padding: 1em;
+}
+.login {
+	background-color: #BCC;
+	margin: 0 auto; /*フォームをページの中央に*/
+	width: 40%;
+	padding: 1em; /*周りの余白を作る*/
+	border: 1px solid #ddd; /*周りの枠*/
+	border-radius: 1em; /*周りの枠の角を丸く*/
+	position: relative; /*この要素を基準点に設定*/
+}
+input {
+	width: 90%;
+	height: 2em;
+}
+input:focus {
+	border-color: #FFF; /*アクティブな要素を強調させる*/
+}
+.button {
+	width: 90%;
+	height: 2em;
+	color: #555;
+	background-color: #d8d8d8;
+	border: 0.5px solid #888;
+	box-shadow: 0.5px 0.5px 0.5px 0.5px #aaa;
+}
