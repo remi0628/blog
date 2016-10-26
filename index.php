@@ -20,14 +20,37 @@
 		<h1>blog</h1>
 		<h2 class="desc">description</h2>
 <!--php-->
-		<div class="article">
-			<p class="day">2016-10-22</p>
-			<a class="title">初投稿</a>
-			<div class="main">
-				<h2 class="heading">ブログ始めました！！</h2>
-				<p>こんにちは</p>
-			</div>
-		</div>
-
+		<?
+		$user_id = $_SESSION['user_id'];
+		$i=1;
+		$count=1;
+		while($count == 1) {
+			$log = "log".$i.".txt";
+			$file = "./article/$user_id/$log";
+			if(file_exists("./article/$user_id/$log")){/*もし$fileがあれば表示*/
+			$log = "log".$i.".txt";
+			$file = "./article/$user_id/$log";
+			$fp = fopen($file,"r");
+			$day = fgets($fp);
+			$title = fgets($fp);
+			$main = fgets($fp);
+			fclose($fp);
+			printf('
+				<div class="article">
+					<p class="day">'.$day.'</p>
+					<a class="title">'.$title.'</a>
+					<div class="main">
+						<h2 class="heading"></h2>
+						<p>'.$main.'</p>
+					</div>
+				</div>
+			');
+			$i++;
+			}else{
+				$count=0;
+				break;
+			}
+		}
+		?>
 	</body>
 </html>

@@ -18,12 +18,35 @@
 			</form>
 		</div>
 		<h1 class="mypage">Mypage</h1>
-		<div class="article">
-			<div class="part">
-				<p class="title box">初投稿</p>
-				<button type="submit" class="box">編集</button>
-				<button type="submit" class="box">削除</button>
+		<?
+		$user_id = $_SESSION['user_id'];
+		$i=1;
+		$count=1;
+		while($count == 1) {
+			$log = "log".$i.".txt";
+			$file = "./article/$user_id/$log";
+			if(file_exists("./article/$user_id/$log")){/*もし$fileがあれば表示*/
+			$log = "log".$i.".txt";
+			$file = "./article/$user_id/$log";
+			$fp = fopen($file,"r");
+			$title = fgets($fp);
+			$title = fgets($fp);
+			fclose($fp);
+			printf('
+			<div class="article">
+				<div class="part">
+					<p class="title box">'.$title.'</p>
+					<button type="submit" class="box">編集</button>
+					<button type="submit" class="box">削除</button>
+				</div>
 			</div>
-		</div>
+			');
+			$i++;
+			}else{
+				$count=0;
+				break;
+			}
+		}
+		?>
 	</body>
 </html>

@@ -42,3 +42,11 @@ p {
 	margin-left: 15px;
 	font-size: 1em;
 }
+button {
+	position: relative; /*formが基準点*/　/*バグ*/
+	bottom: 5px; /*下から5px*/
+	color: #555;
+	background-color: #d8d8d8;
+	border: 0.5px solid #888;
+	box-shadow: 0.5px 0.5px 0.5px 0.5px #aaa;
+}
