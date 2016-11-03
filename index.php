@@ -23,6 +23,7 @@
 <!--php-->
 		<?
 		$user_id = $_SESSION['user_id'];
+		$blog_num = $_SESSION['blog_num'];
 		$i=1;
 		$count=1;
 		while($count == 1) {
@@ -52,6 +53,7 @@
 				break;
 			}
 		}
+		echo $blog_num;
 		?>
 	</body>
 </html>

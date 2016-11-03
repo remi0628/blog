@@ -21,33 +21,50 @@
 		<h1 class="mypage">Mypage</h1>
 		<?
 		$user_id = $_SESSION['user_id'];
+		$blog = 1;
+		$_SESSION["blog"] = $blog;
 		$i=1;
-		$count=1;
-		while($count == 1) {
+		$count=0;
+		$c = 0;
+		$file_count = 0;
+		$dir = "./article/$user_id/";
+		$handle = opendir($dir);
+		do{
+			$c++;
+			$file_count++;
+			$entry[$c] = readdir($handle);
+		}while($entry[$c] != false);/*ディレクトリに何個ファイルがあるのか*/
+		$file_count = $file_count - 3;/*ディレクトリ内の正式な数にする為*/
+		while($count != $file_count) {/*ディレクトリ内の個数分表示するようにwhileを回す*/
 			$log = "log".$i.".txt";
 			$file = "./article/$user_id/$log";
 			if(file_exists("./article/$user_id/$log")){/*もし$fileがあれば表示*/
-			$log = "log".$i.".txt";
-			$file = "./article/$user_id/$log";
-			$fp = fopen($file,"r");
-			$title = fgets($fp);
-			$title = fgets($fp);
-			fclose($fp);
-			printf('
-			<div class="article">
-				<div class="part">
-					<p class="title box">'.$title.'</p>
-					<button type="submit" class="box">編集</button>
-					<button type="submit" class="box">削除</button>
+				$log = "log".$i.".txt";
+				$file = "./article/$user_id/$log";
+				$fp = fopen($file,"r");
+				$title = fgets($fp);
+				$title = fgets($fp);/*二回やっているのは二行目のtitleを取得するため*/
+				fclose($fp);
+				printf('
+				<div class="article">
+					<div class="part">
+						<form action="post.php" method="post">
+							<p class="title box">'.$title.'</p>
+							<button type="submit" class="box" name="edit" value='.$i.'>編集</button>
+							<button type="submit" class="box" name="delete" value='.$i.'>削除</button>
+						</form>
+					</div>
 				</div>
-			</div>
-			');
-			$i++;
+				');/*後で日付を表示するように追加*/
+				$i++;
+				$count++;
 			}else{
-				$count=0;
-				break;
+				$i++;
 			}
 		}
+		$num=$i-1;/*userディレクトリ内のblog[i].txtの最大の数==$num*/
+		$_SESSION['blog_num']=$num;
+		echo $file_count;
 		?>
 	</body>
 </html>

@@ -14,6 +14,32 @@ if(isset($_POST['save'])){/*register処理*/
 			fwrite($fp,$string);
 			fclose($fp);
 		}
+		$blog=1;/*userフォルダの中にいくつまでの番号の記事が入っているか調べる42行目辺りまで*/
+		$_SESSION["blog"]=$blog;
+		$i=1;
+		$count=0;
+		$c=0;
+		$file_count=0;
+		$dir="./article/$user_id/";
+		$handle=opendir($dir);
+		do{
+			$c++;
+			$file_count++;
+			$entry[$c]=readdir($handle);
+		}while($entry[$c]!=false);/*ディレクトリに何個ファイルがあるのか*/
+		$file_count=$file_count-3;/*ディレクトリ内の正式な数にする為*/
+		while($count!=$file_count) {/*ディレクトリ内の個数分表示するようにwhileを回す*/
+			$log="log".$i.".txt";
+			$file="./article/$user_id/$log";
+			if(file_exists("./article/$user_id/$log")){/*もし$fileがあれば表示*/
+				$i++;
+				$count++;
+			}else{
+				$i++;
+			}
+		}
+		$num=$i-2;/*userディレクトリ内のblog[i].txtの最大の数==$num*/
+		$_SESSION['blog_num']=$num;
 		$file="./article/$user_id";/*ユーザーファイルがなければファイルを作成する*/
 		if(file_exists($file)){
 		}else{
@@ -35,6 +61,32 @@ if(isset($_POST['login'])){/*login処理*/
 			$login_cookie=$user_id;
 			setcookie("$login_cookie",1);/*クッキーの保存*/
 			$_SESSION['user_id']=$user_id;
+			$blog=1;/*userフォルダの中にいくつまでの番号の記事が入っているか調べる89行目辺りまで*/
+			$_SESSION["blog"]=$blog;
+			$i=1;
+			$count=0;
+			$c=0;
+			$file_count=0;
+			$dir="./article/$user_id/";
+			$handle=opendir($dir);
+			do{
+				$c++;
+				$file_count++;
+				$entry[$c]=readdir($handle);
+			}while($entry[$c]!=false);/*ディレクトリに何個ファイルがあるのか*/
+			$file_count=$file_count-3;/*ディレクトリ内の正式な数にする為*/
+			while($count!=$file_count) {/*ディレクトリ内の個数分表示するようにwhileを回す*/
+				$log="log".$i.".txt";
+				$file="./article/$user_id/$log";
+				if(file_exists("./article/$user_id/$log")){/*もし$fileがあれば表示*/
+					$i++;
+					$count++;
+				}else{
+					$i++;
+				}
+			}
+			$num=$i-1;/*userディレクトリ内のblog[i].txtの最大の数==$num*/
+			$_SESSION['blog_num']=$num;
 			header('Location: mypage.php');/*登録情報の中に同じ情報が保存されいたらmypageへ*/
 			exit();
 		}else{
@@ -66,19 +118,23 @@ if(isset($_POST['up'])){
 	$day=date('Y-m-d')."\n";/*day*/
 	$string=$day.$title.$main;/*投稿内容を一つに*/
 	$user_id=($_SESSION['user_id']);
-	$count=1;
-	while(1){
-		$log="log".$count.".txt";
+	$num=$_SESSION['blog_num'];
+	$num++;/*最大番号+1にする事で常に最新の記事番号をつけて保存*/
+		$log="log".$num.".txt";
 		$file="./article/$user_id/$log";
-		if(file_exists("./article/$user_id/$log")){/*もし$fileがなければ*/
-			$count++;
-		}else{
-			$fp=fopen($file,"a");/*ファイルを作成し書き込み*/
-			fwrite($fp,$string);
-			fclose($fp);
-			header('Location: mypage.php');
-			break;
-		}
-	}
+		$fp=fopen($file,"a");/*ファイルを作成し書き込み*/
+		fwrite($fp,$string);
+		fclose($fp);
+		header('Location: mypage.php');
+		exit();
+}
+if(isset($_POST['delete'])){
+	$num=$_POST['delete'];
+	$user_id=($_SESSION['user_id']);
+	$log="log".$num.".txt";
+	$file="./article/$user_id/$log";
+	unlink("$file");
+	header('Location: mypage.php');
+	exit();
 }
 ?>

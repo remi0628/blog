@@ -30,7 +30,7 @@
 					<textarea id="main" name="main"></textarea>
 				</div>
 				<div class="day">
-					<p>2016-10-23 3:51</p>
+					<p><?php echo date('Y-m-d H:i')."\n"; ?></p>
 				</div>
 				<div class="button">
 					<button type="submit" name="up">UP</button>
