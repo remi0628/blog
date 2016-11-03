@@ -14,7 +14,7 @@ html,body {
 h1 {
 	text-align: center;
 }
-form {
+form{
 	margin: 0 auto; /*フォームをページの中央に*/
 	width: 60%;
 	padding: 1em; /*周りの余白を作る*/

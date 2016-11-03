@@ -14,7 +14,7 @@ if(isset($_POST['save'])){/*register処理*/
 			fwrite($fp,$string);
 			fclose($fp);
 		}
-		$file="./article/$user_id";
+		$file="./article/$user_id";/*ユーザーファイルがなければファイルを作成する*/
 		if(file_exists($file)){
 		}else{
 			if(mkdir($file,'0777')){
@@ -43,9 +43,21 @@ if(isset($_POST['login'])){/*login処理*/
 		}
 	}
 }
-if(isset($_POST['logout'])){
+if(isset($_POST['logout'])){/*logout処理*/
 	setcookie("$login_cookie",1,time() - 1800);
 	header('Location: login.html');
+	exit();
+}
+if(isset($_POST['upPage'])){
+	header('Location: up.php');
+	exit();
+}
+if(isset($_POST['mypage'])){
+	header('Location: mypage.php');
+	exit();
+}
+if(isset($_POST['TL'])){
+	header('Location: index.php');
 	exit();
 }
 if(isset($_POST['up'])){
@@ -64,6 +76,7 @@ if(isset($_POST['up'])){
 			$fp=fopen($file,"a");/*ファイルを作成し書き込み*/
 			fwrite($fp,$string);
 			fclose($fp);
+			header('Location: mypage.php');
 			break;
 		}
 	}

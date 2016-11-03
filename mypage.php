@@ -10,8 +10,9 @@
 		<div class="menu_list">
 			<form action="post.php" method="post">
 				<ul>
-					<li class="menu">Mypage</li>
-					<li class="menu">投稿</li>
+					<li class="menu"><button type="submit" name="TL">TL</li>
+					<li class="menu"><button type="submit" name="mypage">Mypage</li>
+					<li class="menu"><button type="submit" name="upPage">投稿</li>
 					<li class="menu"><button type="submit" name="logout">Logout</li>
 					<li class="menu"><?php echo $_SESSION['user_id'];?></li>
 				</ul>
