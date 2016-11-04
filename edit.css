@@ -1,0 +1,64 @@
+html,body {
+	background-color: #d8d8d8;
+	width: 100%;
+	font-family:"游ゴシック" , "Yu Gothic" , sans-serif;
+}
+.menu_list {
+	margin-left: auto;
+}
+.menu {
+	display: inline-block;
+	margin: 0 12px;
+	font-size: 0.9em;
+}
+h1 {
+	text-align: center;
+}
+form{
+	margin: 0 auto; /*フォームをページの中央に*/
+	width: 60%;
+	padding: 1em; /*周りの余白を作る*/
+	border: 1px solid #BBB; /*周りの枠*/
+	border-radius: 1em; /*周りの枠の角を丸く*/
+	position: relative; /*この要素を基準点に設定*/
+}
+form div + div { /*各フォームの間隔をあける*/
+	margin-top: 1em;
+}
+label {
+	display: inline-block;
+	width: 50px;
+	text-align: right;
+}
+input, textarea {
+	font: 1em serif; /*fontをserifに設定*/
+	width: 80%;
+	box-sizing: border-box;
+	border: 1px solid #999;
+	border-radius: 0.2em;
+	box-shadow: 1px 1px 1px 1px #aaa;
+}
+input:focus, textarea:focus {
+	border-color: #FFF; /*アクティブな要素を強調させる*/
+}
+textarea {
+	vertical-align: top; /*複数行のフィールドをラベルに揃える*/
+	height: 8em; /*テキスト内の容量*/
+	resize: vertical; /*リサイズできるように*/
+}
+.day {
+	font-size: .7em;
+	margin-left: 50px;
+}
+.button {
+	margin-left: auto;
+	width: 14%;
+}
+button {
+	position: relative; /*formが基準点*/　/*バグ*/
+	bottom: 5px; /*下から5px*/
+	color: #555;
+	background-color: #d8d8d8;
+	border: 0.5px solid #888;
+	box-shadow: 0.5px 0.5px 0.5px 0.5px #aaa;
+}

@@ -42,8 +42,8 @@
 				$log = "log".$i.".txt";
 				$file = "./article/$user_id/$log";
 				$fp = fopen($file,"r");
+				$day = fgets($fp);
 				$title = fgets($fp);
-				$title = fgets($fp);/*二回やっているのは二行目のtitleを取得するため*/
 				fclose($fp);
 				printf('
 				<div class="article">

@@ -25,32 +25,42 @@
 		$user_id = $_SESSION['user_id'];
 		$blog_num = $_SESSION['blog_num'];
 		$i=1;
-		$count=1;
-		while($count == 1) {
+		$count=0;
+		$c = 0;
+		$file_count = 0;
+		$dir = "./article/$user_id/";
+		$handle = opendir($dir);
+		do{
+			$c++;
+			$file_count++;
+			$entry[$c] = readdir($handle);
+		}while($entry[$c] != false);/*ディレクトリに何個ファイルがあるのか*/
+		$file_count = $file_count - 3;/*ディレクトリ内の正式な数にする為*/
+		while($count != $file_count) {/*ディレクトリ内の個数分表示するようにwhileを回す*/
 			$log = "log".$i.".txt";
 			$file = "./article/$user_id/$log";
 			if(file_exists("./article/$user_id/$log")){/*もし$fileがあれば表示*/
-			$log = "log".$i.".txt";
-			$file = "./article/$user_id/$log";
-			$fp = fopen($file,"r");
-			$day = fgets($fp);
-			$title = fgets($fp);
-			$main = fgets($fp);
-			fclose($fp);
-			printf('
-				<div class="article">
-					<p class="day">'.$day.'</p>
-					<a class="title">'.$title.'</a>
-					<div class="main">
-						<h2 class="heading"></h2>
-						<p>'.$main.'</p>
+				$log = "log".$i.".txt";
+				$file = "./article/$user_id/$log";
+				$fp = fopen($file,"r");
+				$day = fgets($fp);
+				$title = fgets($fp);
+				$main = fgets($fp);
+				fclose($fp);
+				printf('
+					<div class="article">
+						<p class="day">'.$day.'</p>
+						<a class="title">'.$title.'</a>
+						<div class="main">
+							<h2 class="heading"></h2>
+							<p>'.$main.'</p>
+						</div>
 					</div>
-				</div>
-			');
-			$i++;
+				');
+				$i++;
+				$count++;
 			}else{
-				$count=0;
-				break;
+				$i++;
 			}
 		}
 		echo $blog_num;
