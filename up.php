@@ -20,7 +20,7 @@
 		</div>
 		<h1>投稿</h1>
 		<div class="form">
-			<form id="up" action="post.php" method="post">
+			<form id="up" action="post.php" method="post" enctype="multipart/form-data">
 				<div>
 					<label for="title">title:</label>
 					<input type="text" id="title"  name="title" />
@@ -28,6 +28,10 @@
 				<div>
 					<label for="main">main:</label>
 					<textarea id="main" name="main"></textarea>
+				</div>
+				<div class="image">
+					<label for="upload">image:</label>
+					<input type="file" name="upload" size="30" id="upload">
 				</div>
 				<div class="day">
 					<p><?php echo date('Y-m-d H:i')."\n"; ?></p>
