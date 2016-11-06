@@ -99,13 +99,56 @@ if(isset($_POST['up'])){
 	$user_id=($_SESSION['user_id']);
 	$num=$_SESSION['blog_num'];
 	$num++;/*最大番号+1にする事で常に最新の記事番号をつけて保存*/
-		$log="log".$num.".txt";
-		$file="./article/$user_id/$log";
-		$fp=fopen($file,"a");/*ファイルを作成し書き込み*/
-		fwrite($fp,$string);
-		fclose($fp);
-		header('Location: mypage.php');
-		exit();
+	$log="log".$num.".txt";
+	$file="./article/$user_id/$log";
+	$fp=fopen($file,"a");/*ファイルを作成し書き込み*/
+	fwrite($fp,$string);
+	fclose($fp);
+	$file_name=$_FILES['upload'];
+	$tmp_name=$file_name['tmp_name'];//一時ファイルのパス
+	$tmp_size=getimagesize($tmp_name);//ファイルのサイズ取得
+	$img=$extension=null;
+	switch ($tmp_size[2]) {
+		case 1:
+			$img=imageCreateFromGIF($tmp_name);
+			$extension='gif';
+			break;
+		case 2:
+			$img=imageCreateFromJPEG($tmp_name);
+			$extension='jpg';
+			break;
+		case 3:
+			$img=imageCreateFromPNG($tmp_name);
+			$extension='png';
+			break;
+		default: break;
+	}
+	$dir='./img/$user_id/';
+	$save_name=$num.'.'.$extension;//blog番号.ファイル形式
+	$path=$_SERVER["DOCUMENT_ROOT"].$dir.$save_name;
+	$img_size=getimagesize($img,500);//最大500px
+	$out=imagecreatetruecolor($image_size['w1'],$image_size['h1']);
+	function getImageSize(img=null,$maxsize=300){//画像サイズを変更
+		if(!$img)return false;
+		$w0=$w1=imageSx($img);//画像幅
+		$h0=$h1=imageSy($img);//画像の高さ
+		if($w0>$maxsize){//maxsize以下の大きさに変更
+			$w1=$maxsize;
+			$h1=(int)$h0*($maxsize/$w0);
+		}
+		if($h1>$maxsize){
+			$w1=(int)$w1*($maxsize/$h1);
+			$h1=$maxsize;
+		}
+		return array(
+			'w0'=>$w0,//元の幅
+			'h0'=>$h0,//高さ
+			'w1'=>$w1,//保存の幅
+			'h1'=>$h1//高さ
+		);
+	}
+	header('Location: mypage.php');
+	exit();
 }
 if(isset($_POST['delete'])){
 	$num=$_POST['delete'];
