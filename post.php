@@ -104,11 +104,14 @@ if(isset($_POST['up'])){
 	$fp=fopen($file,"a");/*ファイルを作成し書き込み*/
 	fwrite($fp,$string);
 	fclose($fp);
+	ini_set('error_reporting',E_ALL);
+	ini_set('display_errors','1');
+	ini_set('open_basedir','none');
 	$file_name=$_FILES['upload'];
-	$tmp_name=$file_name['tmp_name'];//一時ファイルのパス
+	$tmp_name=$file_name['tmp_name']['0'];//一時ファイルのパス
 	$tmp_size=getimagesize($tmp_name);//ファイルのサイズ取得
 	$img=$extension=null;
-	switch ($tmp_size[2]) {
+	switch($tmp_size[2]){
 		case 1:
 			$img=imageCreateFromGIF($tmp_name);
 			$extension='gif';
@@ -123,12 +126,14 @@ if(isset($_POST['up'])){
 			break;
 		default: break;
 	}
+	$nu500=500;
+	$false=false;
 	$dir='./img/$user_id/';
 	$save_name=$num.'.'.$extension;//blog番号.ファイル形式
 	$path=$_SERVER["DOCUMENT_ROOT"].$dir.$save_name;
-	$img_size=getimagesize($img,500);//最大500px
-	$out=imagecreatetruecolor($image_size['w1'],$image_size['h1']);
-	function getImageSize(img=null,$maxsize=300){//画像サイズを変更
+	$img_size=getimagesize($img,$nu500);//最大500px
+	$out=imagecreatetruecolor($image_size['w1'],$image_size['h1']);//新しい画像データ
+	function getImageSize($img=null,$maxsize=300){//画像サイズを変更
 		if(!$img)return false;
 		$w0=$w1=imageSx($img);//画像幅
 		$h0=$h1=imageSy($img);//画像の高さ
@@ -146,6 +151,27 @@ if(isset($_POST['up'])){
 			'w1'=>$w1,//保存の幅
 			'h1'=>$h1//高さ
 		);
+	}
+	$color=imagecolorallocate($out,255,255,255);//色
+	imagefill($out,0,0,$color);//背景を白に
+	imagecopyresampled($out,$img,0,0,0,0,$img_size['w1'],$img_size['h1'],$image_size['w0'],$image_size['h0']);//コピー先,コピー元,コピー先x,コピー先y,コピー元x,コピー元y,コピー先：幅,コピー先：高さ,コピー元：幅,コピー元：高さ
+	saveImage($out,$path,$extension);
+	function saveImage($img=null,$file=null,$ext=null){//画像を保存する
+		if(!$img || !$file || !$ext)return false;
+		switch($ext){
+			case "jpg":
+				$result=imagejpeg($img,$file);
+				break;
+			case "gif":
+				$result=imagegif($img,$file);
+				break;
+			case "png":
+				$result=imagepng($img,$file);
+				break;
+			default: return false; break;
+		}
+		chmod($file,0644);
+		return $result;
 	}
 	header('Location: mypage.php');
 	exit();
