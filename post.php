@@ -92,89 +92,40 @@ if(isset($_POST['TL'])){
 	exit();
 }
 if(isset($_POST['up'])){
+	ini_set('error_reporting',E_ALL);
+	ini_set('display_errors','1');
 	$title=$_POST['title']."\n";
 	$main=str_replace(array("\r", "\n"), '', $_POST['main'])."\n";/*main文にある改行コードを抜き取る*/
 	$day=date('Y-m-d')."\n";/*day*/
 	$string=$day.$title.$main;/*投稿内容を一つに*/
 	$user_id=($_SESSION['user_id']);
 	$num=$_SESSION['blog_num'];
+	$file2="./img/$user_id/img1.jpg";
 	$num++;/*最大番号+1にする事で常に最新の記事番号をつけて保存*/
-	$log="log".$num.".txt";
-	$file="./article/$user_id/$log";
-	$fp=fopen($file,"a");/*ファイルを作成し書き込み*/
-	fwrite($fp,$string);
-	fclose($fp);
-	ini_set('error_reporting',E_ALL);
-	ini_set('display_errors','1');
-	ini_set('open_basedir','none');
-	$file_name=$_FILES['upload'];
-	$tmp_name=$file_name['tmp_name']['0'];//一時ファイルのパス
-	$tmp_size=getimagesize($tmp_name);//ファイルのサイズ取得
-	$img=$extension=null;
-	switch($tmp_size[2]){
-		case 1:
-			$img=imageCreateFromGIF($tmp_name);
-			$extension='gif';
-			break;
-		case 2:
-			$img=imageCreateFromJPEG($tmp_name);
-			$extension='jpg';
-			break;
-		case 3:
-			$img=imageCreateFromPNG($tmp_name);
-			$extension='png';
-			break;
-		default: break;
-	}
-	$nu500=500;
-	$false=false;
-	$dir='./img/$user_id/';
-	$save_name=$num.'.'.$extension;//blog番号.ファイル形式
-	$path=$_SERVER["DOCUMENT_ROOT"].$dir.$save_name;
-	$img_size=getimagesize($img,$nu500);//最大500px
-	$out=imagecreatetruecolor($image_size['w1'],$image_size['h1']);//新しい画像データ
-	function getImageSize($img=null,$maxsize=300){//画像サイズを変更
-		if(!$img)return false;
-		$w0=$w1=imageSx($img);//画像幅
-		$h0=$h1=imageSy($img);//画像の高さ
-		if($w0>$maxsize){//maxsize以下の大きさに変更
-			$w1=$maxsize;
-			$h1=(int)$h0*($maxsize/$w0);
+		$log="log".$num.".txt";
+		$file="./article/$user_id/$log";
+		$fp=fopen($file,"a");/*ファイルを作成し書き込み*/
+		fwrite($fp,$string);
+		fclose($fp);
+		if($_FILES['upload']['size']>1000000){
+			header('Location: register.html');
 		}
-		if($h1>$maxsize){
-			$w1=(int)$w1*($maxsize/$h1);
-			$h1=$maxsize;
+		if(!$ext=array_search(mime_content_type($_FILES['upload']['tmp_name']),
+				array('gif' => 'image/gif',
+					  'jpg' => 'image/jpg',
+					  'png' => 'image/png'
+				),true
+			)){
+			header('Location: login.html');
 		}
-		return array(
-			'w0'=>$w0,//元の幅
-			'h0'=>$h0,//高さ
-			'w1'=>$w1,//保存の幅
-			'h1'=>$h1//高さ
-		);
-	}
-	$color=imagecolorallocate($out,255,255,255);//色
-	imagefill($out,0,0,$color);//背景を白に
-	imagecopyresampled($out,$img,0,0,0,0,$img_size['w1'],$img_size['h1'],$image_size['w0'],$image_size['h0']);//コピー先,コピー元,コピー先x,コピー先y,コピー元x,コピー元y,コピー先：幅,コピー先：高さ,コピー元：幅,コピー元：高さ
-	saveImage($out,$path,$extension);
-	function saveImage($img=null,$file=null,$ext=null){//画像を保存する
-		if(!$img || !$file || !$ext)return false;
-		switch($ext){
-			case "jpg":
-				$result=imagejpeg($img,$file);
-				break;
-			case "gif":
-				$result=imagegif($img,$file);
-				break;
-			case "png":
-				$result=imagepng($img,$file);
-				break;
-			default: return false; break;
+		if(is_uploaded_file($_FILES["upload"]["tmp_name"])){
+			if(move_uploaded_file($_FILES["upload"]["tmp_name"],$file2)){
+				chmod($file2,0644);
+			}
 		}
-		chmod($file,0644);
-		return $result;
-	}
-	header('Location: mypage.php');
-	exit();
+
+		header('Location: mypage.php');
+		exit();
 }
 if(isset($_POST['delete'])){
 	$num=$_POST['delete'];
