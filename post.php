@@ -43,7 +43,6 @@ if(isset($_POST['save'])){/*register処理*/
 			fwrite($fp,$string);
 			fclose($fp);
 		}
-		file_num();
 		$file="./article/$user_id";/*ユーザーファイルがなければファイルを作成する*/
 		if(file_exists($file)){
 		}else{
@@ -51,6 +50,7 @@ if(isset($_POST['save'])){/*register処理*/
 				chmod($file,'0777');
 			}
 		}
+		file_num();
 		header('Location: mypage.php');/*mypage.htmlへ*/
 		exit();
 	}
@@ -100,30 +100,24 @@ if(isset($_POST['up'])){
 	$string=$day.$title.$main;/*投稿内容を一つに*/
 	$user_id=($_SESSION['user_id']);
 	$num=$_SESSION['blog_num'];
-	$file2="./img/$user_id/img1.jpg";
+	$file2="./img/$user_id/img1.jpg";/*画像アップロード先*/
 	$num++;/*最大番号+1にする事で常に最新の記事番号をつけて保存*/
 		$log="log".$num.".txt";
 		$file="./article/$user_id/$log";
 		$fp=fopen($file,"a");/*ファイルを作成し書き込み*/
 		fwrite($fp,$string);
 		fclose($fp);
-		if($_FILES['upload']['size']>1000000){
-			header('Location: register.html');
-		}
-		if(!$ext=array_search(mime_content_type($_FILES['upload']['tmp_name']),
-				array('gif' => 'image/gif',
-					  'jpg' => 'image/jpg',
-					  'png' => 'image/png'
-				),true
-			)){
-			header('Location: login.html');
-		}
-		if(is_uploaded_file($_FILES["upload"]["tmp_name"])){
-			if(move_uploaded_file($_FILES["upload"]["tmp_name"],$file2)){
-				chmod($file2,0644);
+		if(isset($_FILES['upload'])){
+			if(isset($_FILES['upload']['size'])){
+				if($_FILES['upload']['size']>1000000){/**/
+				}
+			}
+			if(is_uploaded_file($_FILES["upload"]["tmp_name"])){
+				if(move_uploaded_file($_FILES["upload"]["tmp_name"],$file2)){
+					chmod($file2,0644);
+				}
 			}
 		}
-
 		header('Location: mypage.php');
 		exit();
 }
