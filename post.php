@@ -1,7 +1,7 @@
 <?php
-	session_start();
-?>
-<?php
+session_start();
+/*ini_set('error_reporting',E_ALL);
+ini_set('display_errors','1');*/
 function file_num(){/*ディレクトリ内のblog記事がいくつ入っているか調べる*/
 		$user_id=$_POST['user_id'];
 		$blog=1;/*userフォルダの中にいくつまでの番号の記事が入っているか調べる42行目辺りまで*/
@@ -37,6 +37,8 @@ if(isset($_POST['save'])){/*register処理*/
 		$password=$_POST['password'];
 		$string=$user_id.",".$password."\n";
 		$_SESSION['user_id']=$user_id;
+		$login_cookie=$user_id;
+		setcookie("$login_cookie",1);/*クッキーの保存*/
 		$register_id=file_get_contents('./data.txt',true);/*data.txt内のデータを文字列に読み込む*/
 		if(strpos($register_id,$string)===false){
 			$fp=fopen("data.txt","a");/*ファイルへ登録情報保存*/
@@ -44,10 +46,19 @@ if(isset($_POST['save'])){/*register処理*/
 			fclose($fp);
 		}
 		$file="./article/$user_id";/*ユーザーファイルがなければファイルを作成する*/
+		$file2="./img/$user_id";
 		if(file_exists($file)){
 		}else{
-			if(mkdir($file,'0777')){
-				chmod($file,'0777');
+			umask(0);
+			if(mkdir($file,0777)){
+				chmod($file,0777);
+			}
+		}
+		if(file_exists($file2)){
+		}else{
+			umask(0);
+			if(mkdir($file2,0777)){
+				chmod($file2,0777);
 			}
 		}
 		file_num();
@@ -100,7 +111,6 @@ if(isset($_POST['up'])){
 	$string=$day.$title.$main;/*投稿内容を一つに*/
 	$user_id=($_SESSION['user_id']);
 	$num=$_SESSION['blog_num'];
-	$file2="./img/$user_id/img1.jpg";/*画像アップロード先*/
 	$num++;/*最大番号+1にする事で常に最新の記事番号をつけて保存*/
 		$log="log".$num.".txt";
 		$file="./article/$user_id/$log";
@@ -108,14 +118,32 @@ if(isset($_POST['up'])){
 		fwrite($fp,$string);
 		fclose($fp);
 		if(isset($_FILES['upload'])){
+			$flag='0';//flag=0
 			if(isset($_FILES['upload']['size'])){
 				if($_FILES['upload']['size']>1000000){/**/
 				}
 			}
+			if(strpos($_FILES['upload']['name'],'.jpg')!==false){
+				$ext='.jpg';
+			}elseif(strpos($_FILES['upload']['name'],'.png')!==false){
+				$ext='.png';
+			}elseif(strpos($_FILES['upload']['name'],'.gif')!==false){
+				$ext='.gif';
+			}elseif(strpos($_FILES['upload']['name'],'.')!==false){
+				die("ファイル形式:".$_FILES['upload']['name']."対応していません");
+				die("gif,png,jpgのみ有効");
+				$flag='1';
+			}else{
+				$flag='1';
+			}
+			if($flag=='0'){//正式な画像の場合保存
+			$log2="image".$num.$ext;
+			$file2="./img/$user_id/$log2";/*画像アップロード先*/
 			if(is_uploaded_file($_FILES["upload"]["tmp_name"])){
 				if(move_uploaded_file($_FILES["upload"]["tmp_name"],$file2)){
-					chmod($file2,0644);
+					chmod($file2,0777);
 				}
+			}
 			}
 		}
 		header('Location: mypage.php');
@@ -125,6 +153,21 @@ if(isset($_POST['delete'])){
 	$num=$_POST['delete'];
 	$user_id=($_SESSION['user_id']);
 	$log="log".$num.".txt";
+	$ext="image".$num.".jpg";
+	$file2="./img/$user_id/$ext";
+	if(file_exists($file2)){
+		unlink($file2);
+	}
+	$ext="image".$num.".png";
+	$file2="./img/$user_id/$ext";
+	if(file_exists($file2)){
+		unlink($file2);
+	}
+	$ext="image".$num.".gif";
+	$file2="./img/$user_id/$ext";
+	if(file_exists($file2)){
+		unlink($file2);
+	}
 	$file="./article/$user_id/$log";
 	unlink("$file");
 	header('Location: mypage.php');
@@ -150,4 +193,3 @@ if(isset($_POST['edit_up'])){
 	header('Location: mypage.php');
 	exit();
 }
-?>

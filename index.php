@@ -51,6 +51,7 @@
 					<div class="article">
 						<p class="day">'.$day.'</p>
 						<a class="title">'.$title.'</a>
+						<p><img class="box" src="./img/'.$user_id.'/image'.$i.'.jpg"></p>
 						<div class="main">
 							<h2 class="heading"></h2>
 							<p>'.$main.'</p>

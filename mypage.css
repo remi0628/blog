@@ -35,3 +35,8 @@ button {
 	border: 0.5px solid #888;
 	box-shadow: 0.5px 0.5px 0.5px 0.5px #aaa;
 }
+img.box {
+	width: 5em;
+	height: 5em;
+	vertical-align: bottom;
+}

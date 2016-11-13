@@ -31,7 +31,7 @@
 				</div>
 				<div class="image">
 					<label for="upload">image:</label>
-					<input type="file" name="upload" size="30" id="upload">
+					<input type="file" name="upload" size="30" id="upload" value="not">
 				</div>
 				<div class="day">
 					<p><?php echo date('Y-m-d H:i')."\n"; ?></p>

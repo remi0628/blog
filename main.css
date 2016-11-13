@@ -42,6 +42,10 @@ p {
 	margin-left: 15px;
 	font-size: 1em;
 }
+p img {
+	width: 5em;
+	height: 5em;
+}
 button {
 	position: relative; /*formが基準点*/　/*バグ*/
 	bottom: 5px; /*下から5px*/
