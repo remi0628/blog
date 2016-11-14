@@ -50,8 +50,12 @@
 				printf('
 					<div class="article">
 						<p class="day">'.$day.'</p>
-						<a class="title">'.$title.'</a>
-						<p><img class="box" src="./img/'.$user_id.'/image'.$i.'.jpg"></p>
+						<a class="title">'.$title.'</a>');
+						$url='./img/'.$user_id.'/image'.$i.'.jpg';
+						if(file_exists($url)==true) {
+							printf('<p><img class="box" src="./img/'.$user_id.'/image'.$i.'.jpg"></p>');
+						}
+						printf('
 						<div class="main">
 							<h2 class="heading"></h2>
 							<p>'.$main.'</p>

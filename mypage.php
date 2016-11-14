@@ -49,12 +49,11 @@
 				<div class="article">
 					<div class="part">
 						<form action="post.php" method="post">');
-							$url="./img/'.$user_id.'/image'.$i.'.jpg";
-							/*if(file_exists($url)!=true) {
+							$url='./img/'.$user_id.'/image'.$i.'.jpg';
+							if(file_exists($url)==true) {
 								printf('<img class="box" src="./img/'.$user_id.'/image'.$i.'.jpg">');
-							}*/
-							printf('<img class="box" src="./img/'.$user_id.'/image'.$i.'.jpg">');
-
+							}
+							/*printf('<img class="box" src="img/'.$user_id.'/image'.$i.'.jpg">');*/
 							printf('
 							<p class="title box">'.$title.'</p>
 							<button type="submit" class="box" name="edit" value='.$i.'>編集</button>

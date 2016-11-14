@@ -121,8 +121,10 @@ if(isset($_POST['up'])){
 			$flag='0';//flag=0
 			if(isset($_FILES['upload']['size'])){
 				if($_FILES['upload']['size']>1000000){/**/
+					$flag='1';
 				}
 			}
+			$ext='0';
 			if(strpos($_FILES['upload']['name'],'.jpg')!==false){
 				$ext='.jpg';
 			}elseif(strpos($_FILES['upload']['name'],'.png')!==false){
@@ -143,6 +145,15 @@ if(isset($_POST['up'])){
 				if(move_uploaded_file($_FILES["upload"]["tmp_name"],$file2)){
 					chmod($file2,0777);
 				}
+			$in=ImageCreateFromJPEG($file2);//画像読み込み
+			$size=GetImageSize($file2);//サイズ取得
+			$width=$size[0]/2;
+			$height=$size[1]/2;
+			$out=imagecreatetruecolor($width,$height);//画像生成
+			imagecopyresampled($out,$in,0,0,0,0,$width,$height,$size[0],$size[1]);//サイズ変更
+			imagejpeg($out,$file2);//画像保存
+			imagedestroy($in);
+			imagedestroy($out);
 			}
 			}
 		}
