@@ -53,6 +53,14 @@
 							if(file_exists($url)==true) {
 								printf('<img class="box" src="./img/'.$user_id.'/image'.$i.'.jpg">');
 							}
+							$url='./img/'.$user_id.'/image'.$i.'.png';
+							if(file_exists($url)==true) {
+								printf('<img class="box" src="./img/'.$user_id.'/image'.$i.'.png">');
+							}
+							$url='./img/'.$user_id.'/image'.$i.'.gif';
+							if(file_exists($url)==true) {
+								printf('<img class="box" src="./img/'.$user_id.'/image'.$i.'.gif">');
+							}
 							/*printf('<img class="box" src="img/'.$user_id.'/image'.$i.'.jpg">');*/
 							printf('
 							<p class="title box">'.$title.'</p>

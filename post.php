@@ -124,6 +124,7 @@ if(isset($_POST['up'])){
 					$flag='1';
 				}
 			}
+			$flag='0';
 			$ext='0';
 			if(strpos($_FILES['upload']['name'],'.jpg')!==false){
 				$ext='.jpg';
@@ -138,23 +139,51 @@ if(isset($_POST['up'])){
 			}else{
 				$flag='1';
 			}
-			if($flag=='0'){//正式な画像の場合保存
-			$log2="image".$num.$ext;
-			$file2="./img/$user_id/$log2";/*画像アップロード先*/
-			if(is_uploaded_file($_FILES["upload"]["tmp_name"])){
-				if(move_uploaded_file($_FILES["upload"]["tmp_name"],$file2)){
-					chmod($file2,0777);
+			if($ext!='0'){//正式な画像の場合保存
+				$log2="image".$num.$ext;
+				$file2="./img/$user_id/$log2";/*画像アップロード先*/
+				if(is_uploaded_file($_FILES["upload"]["tmp_name"])){
+					if(move_uploaded_file($_FILES["upload"]["tmp_name"],$file2)){
+						chmod($file2,0777);
+					}
+					switch ($ext) {
+						case '.jpg':
+							$in=ImageCreateFromJPEG($file2);//画像読み込み
+							break;
+						case '.png':
+							$in=imagecreatefrompng($file2);
+							break;
+						case '.gif':
+							$in=imagecreatefromgif($file2);
+							break;
+						default:
+							$flag='1';
+							break;
+					}
+					if($flag=='0'){
+					$size=GetImageSize($file2);//サイズ取得
+					$width=$size[0]/2;
+					$height=$size[1]/2;
+					$out=imagecreatetruecolor($width,$height);//画像生成
+					imagecopyresampled($out,$in,0,0,0,0,$width,$height,$size[0],$size[1]);//サイズ変更
+					imagejpeg($out,$file2);//画像保存
+						switch ($ext) {
+							case '.jpg':
+								imagejpeg($out,$file2);//画像保存
+								break;
+							case '.png':
+								imagepng($out,$file2);
+								break;
+							case '.gif':
+								imagegif($out,$file2);
+								break;
+							default:
+								break;
+						}
+					imagedestroy($in);
+					imagedestroy($out);
+					}
 				}
-			$in=ImageCreateFromJPEG($file2);//画像読み込み
-			$size=GetImageSize($file2);//サイズ取得
-			$width=$size[0]/2;
-			$height=$size[1]/2;
-			$out=imagecreatetruecolor($width,$height);//画像生成
-			imagecopyresampled($out,$in,0,0,0,0,$width,$height,$size[0],$size[1]);//サイズ変更
-			imagejpeg($out,$file2);//画像保存
-			imagedestroy($in);
-			imagedestroy($out);
-			}
 			}
 		}
 		header('Location: mypage.php');

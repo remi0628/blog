@@ -29,6 +29,18 @@
 			$title=fgets($fp);
 			$main=fgets($fp);
 			fclose($fp);
+			$url='./img/'.$user_id.'/image'.$num.'.jpg';
+			if(file_exists($url)==true) {
+				$image='./img/'.$user_id.'/image'.$num.'.jpg';
+			}
+			$url='./img/'.$user_id.'/image'.$num.'.png';
+			if(file_exists($url)==true) {
+				$image='./img/'.$user_id.'/image'.$num.'.png';
+			}
+			$url='./img/'.$user_id.'/image'.$num.'.gif';
+			if(file_exists($url)==true) {
+				$image='./img/'.$user_id.'/image'.$num.'.gif';
+			}
 		?>
 		<div class="form">
 			<form id="up" action="post.php" method="post">
@@ -39,6 +51,10 @@
 				<div>
 					<label for="main">main:</label>
 					<textarea id="main" name="main"><?php echo $main;?></textarea>
+				</div>
+				<div class="image">
+					<label for="upload">image:</label>
+					<input type="file" name="upload" size="30" id="upload" value="<?php $image;?>">
 				</div>
 				<div class="day">
 					<p><?php echo date('Y-m-d H:i')."\n"; ?></p>
