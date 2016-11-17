@@ -128,9 +128,15 @@ if(isset($_POST['up'])){
 			$ext='0';
 			if(strpos($_FILES['upload']['name'],'.jpg')!==false){
 				$ext='.jpg';
+			}elseif(strpos($_FILES['upload']['name'],'.JPG')!==false){
+				$ext='.jpg';
 			}elseif(strpos($_FILES['upload']['name'],'.png')!==false){
 				$ext='.png';
+			}elseif(strpos($_FILES['upload']['name'],'.PNG')!==false){
+				$ext='.png';
 			}elseif(strpos($_FILES['upload']['name'],'.gif')!==false){
+				$ext='.gif';
+			}elseif(strpos($_FILES['upload']['name'],'.GIF')!==false){
 				$ext='.gif';
 			}elseif(strpos($_FILES['upload']['name'],'.')!==false){
 				die("ファイル形式:".$_FILES['upload']['name']."対応していません");
@@ -230,6 +236,92 @@ if(isset($_POST['edit_up'])){
 	$fp=fopen($file,"w");/*ファイルを作成し書き込み*/
 	fwrite($fp,$string);
 	fclose($fp);
+	$flag='0';//flag=0
+	if(isset($_FILES['upload']['size'])){
+		if($_FILES['upload']['size']>1000000){/**/
+			$flag='1';
+		}
+	}
+	$ext='0';
+	if(strpos($_FILES['upload']['name'],'.jpg')!==false){
+		$ext='.jpg';
+	}elseif(strpos($_FILES['upload']['name'],'.JPG')!==false){
+		$ext='.jpg';
+	}elseif(strpos($_FILES['upload']['name'],'.png')!==false){
+		$ext='.png';
+	}elseif(strpos($_FILES['upload']['name'],'.PNG')!==false){
+		$ext='.png';
+	}elseif(strpos($_FILES['upload']['name'],'.gif')!==false){
+		$ext='.gif';
+	}elseif(strpos($_FILES['upload']['name'],'.GIF')!==false){
+		$ext='.gif';
+	}elseif(strpos($_FILES['upload']['name'],'.')!==false){
+		die("ファイル形式:".$_FILES['upload']['name']."対応していません");
+		die("gif,png,jpgのみ有効");
+		$flag='1';
+	}else{
+		$flag='1';
+	}
+	if($ext!='0'){//正式な画像の場合保存
+		$log2="image".$num.".jpg";
+		$file2="./img/$user_id/$log2";/*元画像*/
+		if(file_exists($file2)){
+			unlink($file2);
+		}
+		$log2="image".$num.".png";
+		$file2="./img/$user_id/$log2";
+		if(file_exists($file2)){
+			unlink($file2);
+		}
+		$log2="image".$num.".gif";
+		$file2="./img/$user_id/$log2";
+		if(file_exists($file2)){
+			unlink($file2);
+		}
+		$log2="image".$num.$ext;
+		$file2="./img/$user_id/$log2";/*画像アップロード先*/
+		if(is_uploaded_file($_FILES["upload"]["tmp_name"])){
+			if(move_uploaded_file($_FILES["upload"]["tmp_name"],$file2)){
+				chmod($file2,0777);
+			}
+			switch ($ext) {
+				case '.jpg':
+					$in=ImageCreateFromJPEG($file2);//画像読み込み
+					break;
+				case '.png':
+					$in=imagecreatefrompng($file2);
+					break;
+				case '.gif':
+					$in=imagecreatefromgif($file2);
+					break;
+				default:
+					$flag='1';
+					break;
+			}
+			if($flag=='0'){
+				$size=GetImageSize($file2);//サイズ取得
+				$width=$size[0]/2;
+				$height=$size[1]/2;
+				$out=imagecreatetruecolor($width,$height);//画像生成
+				imagecopyresampled($out,$in,0,0,0,0,$width,$height,$size[0],$size[1]);//サイズ変更
+				switch ($ext) {
+					case '.jpg':
+						imagejpeg($out,$file2);//画像保存
+						break;
+					case '.png':
+						imagepng($out,$file2);
+						break;
+					case '.gif':
+						imagegif($out,$file2);
+						break;
+					default:
+						break;
+				}
+				imagedestroy($in);
+				imagedestroy($out);
+			}
+		}
+	}
 	header('Location: mypage.php');
 	exit();
 }

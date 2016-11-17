@@ -43,7 +43,7 @@
 			}
 		?>
 		<div class="form">
-			<form id="up" action="post.php" method="post">
+			<form id="up" action="post.php" method="post" enctype="multipart/form-data">
 				<div>
 					<label for="title">title:</label>
 					<input type="text" id="title"  name="title" value="<?php echo $title;?>" />
