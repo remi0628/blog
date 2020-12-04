@@ -1,7 +1,7 @@
 # blog
 ・PHPでのブログサイト作成。作成年：2016年11月  
-　古い制作物なので画像資料が少ないです。  
-　以下の画像以外にもアカウントにログインする為の「ログインページ」等存在しています。  
+　古い制作物なので画像資料が少ないです。    
+　以下の画像以外にもアカウントを作成する為の「登録ページ」等存在しています。
 
 ## MyPage
 <img width="300" alt="MyPage" src="https://user-images.githubusercontent.com/16487150/101138071-093b5180-3653-11eb-90d8-4cdc4746ec8d.jpg">
@@ -12,9 +12,11 @@
 ---
 
 -- 以下はバージョンが古い時の画像になります --
-
 ## Posts (投稿)
 <img width="500" alt="Posts" src="https://user-images.githubusercontent.com/16487150/101139036-49e79a80-3654-11eb-929e-5b2886c494ef.jpg">
+
+## Login
+<img width="500" alt="Login" src="https://user-images.githubusercontent.com/16487150/101140535-73092a80-3656-11eb-835f-aadd85dd6116.png">
 
 ## Smartphone Screen
 ・レスポンシブデザインに対応
